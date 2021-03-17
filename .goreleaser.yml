@@ -1,0 +1,34 @@
+# Make sure to check the documentation at http://goreleaser.com
+builds:
+  - main: ./cmd/hypper
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm
+      - arm64
+source:
+  enabled: true
+archives:
+  # Default template uses underscores instead of - and doesnt add the 'v' to the archive
+  - name_template: "{{ .ProjectName }}-v{{ .Version }}-{{ .Os }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}"
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+checksum:
+  name_template: '{{ .ProjectName }}-v{{ .Version }}_.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
