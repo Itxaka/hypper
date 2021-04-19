@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Search repos for Hypper charts - Hypper documentation</title>
+        <title>Pulling charts to the local machine - Hypper documentation</title>
         
         
 
@@ -93,7 +93,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../../design.html"><strong aria-hidden="true">1.</strong> Hypper Design</a></li><li class="chapter-item expanded "><a href="../../user/tutorials/installing.html"><strong aria-hidden="true">2.</strong> Installing</a></li><li class="chapter-item expanded "><a href="../../user/tutorials/quickstart.html"><strong aria-hidden="true">3.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="../../user/howto/index.html"><strong aria-hidden="true">4.</strong> How tos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../user/howto/expandcharthypper.html"><strong aria-hidden="true">4.1.</strong> Expand a chart with Hypper annotations</a></li><li class="chapter-item expanded "><a href="../../user/howto/lintchart.html"><strong aria-hidden="true">4.2.</strong> Lint charts</a></li><li class="chapter-item expanded "><a href="../../user/howto/search.html" class="active"><strong aria-hidden="true">4.3.</strong> Search repos for Hypper charts</a></li></ol></li><li class="chapter-item expanded "><a href="../../reference-guides.html"><strong aria-hidden="true">5.</strong> Reference guides</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../design.html"><strong aria-hidden="true">1.</strong> Hypper Design</a></li><li class="chapter-item expanded "><a href="../../user/tutorials/installing.html"><strong aria-hidden="true">2.</strong> Installing</a></li><li class="chapter-item expanded "><a href="../../user/tutorials/quickstart.html"><strong aria-hidden="true">3.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="../../user/howto/index.html"><strong aria-hidden="true">4.</strong> How tos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../user/howto/pull.html" class="active"><strong aria-hidden="true">4.1.</strong> Pulling charts to the local machine</a></li><li class="chapter-item expanded "><a href="../../user/howto/expandcharthypper.html"><strong aria-hidden="true">4.2.</strong> Expand a chart with Hypper annotations</a></li><li class="chapter-item expanded "><a href="../../user/howto/lintchart.html"><strong aria-hidden="true">4.3.</strong> Lint charts</a></li><li class="chapter-item expanded "><a href="../../user/howto/search.html"><strong aria-hidden="true">4.4.</strong> Search repos for Hypper charts</a></li><li class="chapter-item expanded "><a href="../../user/howto/shared-deps.html"><strong aria-hidden="true">4.5.</strong> Work with shared dependencies</a></li></ol></li><li class="chapter-item expanded "><a href="../../reference-guides.html"><strong aria-hidden="true">5.</strong> Reference guides</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,37 +163,38 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h2><a class="header" href="#searching-for-charts-in-repos" id="searching-for-charts-in-repos">Searching for charts in repos</a></h2>
-<p>Search reads through all the repositories configured on the system, and looks for matches. Searching on these repositories uses the metadata stored on the system.</p>
-<p>It will display the latest stable versions of the charts found.</p>
-<pre><code class="language-shell">$ hypper search repo fleet
-NAME              	CHART VERSION	APP VERSION	DESCRIPTION                            
-hypper/fleet      	0.3.500      	0.3.5      	Fleet Manager - GitOps at Scale        
-hypper/fleet-agent	0.3.500      	0.3.5      	Fleet Manager Agent - GitOps at Scale  
-hypper/fleet-crd  	0.3.500      	0.3.5      	Fleet Manager CustomResourceDefinitions
+                        <h1><a class="header" href="#pulling-charts-to-the-local-machine" id="pulling-charts-to-the-local-machine">Pulling charts to the local machine</a></h1>
+<p>Sometimes there is a need to modify charts from a repo or just have a look at what the chart is actually doing.</p>
+<p>For that you can use <code>hypper pull</code>, which will download the chart to your local machine.</p>
+<h2><a class="header" href="#pulling-a-chart" id="pulling-a-chart">Pulling a chart</a></h2>
+<pre><code class="language-shell">$ hypper pull hypper/fleet
+$ ls fleet*
+fleet-0.3.500.tgz
 </code></pre>
-<p>By default, it will only show the latest version that match the keyword used. In order to see all versions you can use the <code>-l</code> flag.</p>
-<pre><code class="language-shell">$ hypper search repo fleet-agent -l
-NAME              	CHART VERSION	APP VERSION	DESCRIPTION                          
-hypper/fleet-agent	0.3.500      	0.3.5      	Fleet Manager Agent - GitOps at Scale
-hypper/fleet-agent	0.1.500      	0.1.5      	Fleet Manager Agent - GitOps at Scale
+<h2><a class="header" href="#pulling-a-chart-and-extracting-it" id="pulling-a-chart-and-extracting-it">Pulling a chart and extracting it</a></h2>
+<p>Usually, pull will download the tar.gz chart package, but you can use <code>--untar</code> so instead the package is extracted automatically.</p>
+<pre><code class="language-shell">$ hypper pull hypper/fleet --untar
+$ ls fleet/     
+charts  Chart.yaml  templates  values.yaml
 </code></pre>
-<p>You can also search for a specific chart version by using the <code>--version VERSION</code> flag..</p>
-<p>Note that VERSION needs to be a valid SemVer version.</p>
-<pre><code class="language-shell">$ hypper search repo fleet-agent --version 0.1.500
-NAME              	CHART VERSION	APP VERSION	DESCRIPTION                          
-hypper/fleet-agent	0.1.500      	0.1.5      	Fleet Manager Agent - GitOps at Scale
+<h2><a class="header" href="#pulling-a-specific-chart-version" id="pulling-a-specific-chart-version">Pulling a specific chart version</a></h2>
+<p>Pull will automatically download the latest chart version, but you can use <code>--version</code> to get the specified version instead.</p>
+<pre><code class="language-shell">$ hypper pull hypper/fleet --version 0.3.400
+$ ls fleet*
+fleet-0.3.400.tgz
 </code></pre>
-<p>It's also possible to pass the <code>--regexp</code> flag to use regexp in the search.</p>
-<pre><code class="language-shell">$ hypper search repo &quot;fleet-&quot; --regexp
-NAME              	CHART VERSION	APP VERSION	DESCRIPTION                            
-hypper/fleet-agent	0.3.500      	0.3.5      	Fleet Manager Agent - GitOps at Scale  
-hypper/fleet-crd  	0.3.500      	0.3.5      	Fleet Manager CustomResourceDefinitions
+<h2><a class="header" href="#changing-the-output-dir" id="changing-the-output-dir">Changing the output dir</a></h2>
+<p>By default, pull will download the chart into the current dir. Use the <code>-d</code> flag to set the output dir.</p>
+<p>Note: The output dir needs to exist beforehand.</p>
+<pre><code class="language-shell">$ hypper pull hypper/fleet -d chartslocal
+$ ls chartslocal 
+fleet-0.3.500.tgz
 </code></pre>
-<p>If you want to search for development charts (only stable charts are shown by default), use the <code>--devel</code> flag to show those development charts.</p>
-<pre><code class="language-shell">$ hypper search repo fleet-agent --devel
-NAME              	CHART VERSION	APP VERSION	DESCRIPTION                            
-hypper/fleet-agent	0.3.500-rc2      	0.3.5-rc2      	Fleet Manager Agent - GitOps at Scale
+<h2><a class="header" href="#pulling-development-versions" id="pulling-development-versions">Pulling development versions</a></h2>
+<p>You can use the <code>--devel</code> flag to pull devel versions. By default, hypper won't download, search or list devel version unless specified by the flag.</p>
+<pre><code class="language-shell">$ hypper pull hypper/fleet --version 0.3.600-rc1 --devel
+$ ls fleet*
+fleet-0.3.600-rc1.tgz
 </code></pre>
 
                     </main>
@@ -201,13 +202,13 @@ hypper/fleet-agent	0.3.500-rc2      	0.3.5-rc2      	Fleet Manager Agent - GitOp
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../../user/howto/lintchart.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../user/howto/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../../reference-guides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../../user/howto/expandcharthypper.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -219,13 +220,13 @@ hypper/fleet-agent	0.3.500-rc2      	0.3.5-rc2      	Fleet Manager Agent - GitOp
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../../user/howto/lintchart.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../user/howto/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../../reference-guides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../../user/howto/expandcharthypper.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

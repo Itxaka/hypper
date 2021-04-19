@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Work with shared dependencies - Hypper documentation</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="../../favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="../../favicon.png">
+        
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../design.html"><strong aria-hidden="true">1.</strong> Hypper Design</a></li><li class="chapter-item expanded "><a href="../../user/tutorials/installing.html"><strong aria-hidden="true">2.</strong> Installing</a></li><li class="chapter-item expanded "><a href="../../user/tutorials/quickstart.html"><strong aria-hidden="true">3.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="../../user/howto/index.html"><strong aria-hidden="true">4.</strong> How tos</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../user/howto/pull.html"><strong aria-hidden="true">4.1.</strong> Pulling charts to the local machine</a></li><li class="chapter-item expanded "><a href="../../user/howto/expandcharthypper.html"><strong aria-hidden="true">4.2.</strong> Expand a chart with Hypper annotations</a></li><li class="chapter-item expanded "><a href="../../user/howto/lintchart.html"><strong aria-hidden="true">4.3.</strong> Lint charts</a></li><li class="chapter-item expanded "><a href="../../user/howto/search.html"><strong aria-hidden="true">4.4.</strong> Search repos for Hypper charts</a></li><li class="chapter-item expanded "><a href="../../user/howto/shared-deps.html" class="active"><strong aria-hidden="true">4.5.</strong> Work with shared dependencies</a></li></ol></li><li class="chapter-item expanded "><a href="../../reference-guides.html"><strong aria-hidden="true">5.</strong> Reference guides</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">Hypper documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        <a href="https://github.com/rancher-sandbox/hypper" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#working-with-shared-dependencies" id="working-with-shared-dependencies">Working with shared dependencies</a></h1>
+<p>Hypper charts support the concept of shared dependency charts.</p>
+<p>A chart declared as a shared dependency is a chart that more than one chart may
+depend on; once deployed, it can be reused by multiple other deployments. Charts
+deployed as shared dependencies are the analogous of system libraries in an OS:
+dependencies that are used by several consumers.</p>
+<h2><a class="header" href="#creating-a-hypper-chart-with-shared-dependencies" id="creating-a-hypper-chart-with-shared-dependencies">Creating a Hypper chart with shared dependencies</a></h2>
+<p>Let's create the simplest chart possible, and add charts as shared dependencies
+to it.</p>
+<p>First, we create a simple empty chart:</p>
+<pre><code class="language-console">$ helm create our-app
+</code></pre>
+<p>Now, we can edit <code>./our-app/Chart.yaml</code>, and add some shared dependencies to it:</p>
+<pre><code class="language-diff">apiVersion: v2
+name: our-app
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: 1.16.0
+annotations:
++ hypper.cattle.io/shared-dependencies: |
++   - name: postgresql
++     version: &quot;~8.9.4&quot;
++     repository: &quot;https://charts.bitnami.com/bitnami&quot;
++   - name: prometheus
++     version: &quot;~13.7.0&quot;
++     repository: &quot;https://prometheus-community.github.io/helm-charts&quot;
+</code></pre>
+<p>Shared dependencies are just normal Helm
+<a href="https://helm.sh/docs/topics/charts/#chart-dependencies">Dependencies</a>. As
+such, they are defined with:</p>
+<ul>
+<li>The name field is the name of the chart you want.</li>
+<li>The version field is the version of the chart you want.</li>
+<li>The repository field is the full URL to the chart repository. Note that you
+must also use <code>hypper repo add</code> to add that repo locally. You might use the
+name of the repo instead of URL.</li>
+</ul>
+<p>We can also add a default release name and namespace, where our-app and its
+shared-dependencies will get installed:</p>
+<pre><code class="language-diff">apiVersion: v2
+name: our-app
+description: A Helm chart for Kubernetes
+type: application
+version: 0.1.0
+appVersion: 1.16.0
+annotations:
++ hypper.cattle.io/namespace: hypper
++ hypper.cattle.io/release-name: our-app-name
+  hypper.cattle.io/shared-dependencies: |
+    - name: postgresql
+      version: &quot;~8.9.4&quot;
+      repository: &quot;https://charts.bitnami.com/bitnami&quot;
+    - name: prometheus
+      version: &quot;~13.7.0&quot;
+      repository: &quot;https://prometheus-community.github.io/helm-charts&quot;
+</code></pre>
+<p>To verify that we did create the correctly, let's lint it:</p>
+<pre><code class="language-console">$ hypper lint ./our-app
+==&gt; Linting our-app
+[INFO] Chart.yaml: icon is recommended
+
+1 chart(s) linted, 0 chart(s) failed
+</code></pre>
+<h2><a class="header" href="#listing-shared-dependencies" id="listing-shared-dependencies">Listing shared dependencies</a></h2>
+<p>Hypper's <code>shared-dep list</code> command will list the shared dependencies, its status, and other information:</p>
+<pre><code>$ hypper shared-deps list ./our-app
+NAME            VERSION REPOSITORY                                              STATUS
+postgresql      ~8.9.4  https://charts.bitnami.com/bitnami                      not-installed
+prometheus      ~13.7.0 https://prometheus-community.github.io/helm-charts      not-installed
+</code></pre>
+<h2><a class="header" href="#deploying-shared-dependencies" id="deploying-shared-dependencies">Deploying shared dependencies</a></h2>
+<p>First, add the repos of the shared dependencies, so they are found:</p>
+<pre><code class="language-console">$ hypper repo add bitnami 'https://charts.bitnami.com/bitnami'
+&quot;bitnami&quot; has been added to your repositories
+$ hypper repo add prometheus-community 'https://prometheus-community.github.io/helm-charts'
+&quot;prometheus-community&quot; has been added to your repositories
+$ hypper repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the &quot;stable&quot; chart repository
+...Successfully got an update from the &quot;bitnami&quot; chart repository
+...Successfully got an update from the &quot;prometheus-community&quot; chart repository
+🛳  Update Complete.
+</code></pre>
+<p>Now, let's pretend that we had <code>prometheus</code> already installed, so let's install
+it by hand:</p>
+<pre><code>$ hypper install prometheus-community/prometheus -n hypper --create-namespace
+Installing chart &quot;prometheus&quot; in namespace &quot;hypper&quot;…
+Done! 👏
+</code></pre>
+<p>That satisfies one shared dependency of <code>our-app</code>:</p>
+<pre><code class="language-console">$ hypper shared-deps list ./our-app
+NAME            VERSION REPOSITORY                                              STATUS
+postgresql      ~8.9.4  https://charts.bitnami.com/bitnami                      not-installed
+prometheus      ~13.7.0 https://prometheus-community.github.io/helm-charts      deployed
+</code></pre>
+<p>Then, we can install <code>our-app</code>, and any of its missing shared dependencies:</p>
+<pre><code class="language-console">$ hypper install ./our-app --create-namespace
+Installing chart &quot;postgresql&quot; in namespace &quot;hypper&quot;…
+Shared dependency prometheus already installed, not doing anything
+Installing chart &quot;our-app-name&quot; in namespace &quot;hypper&quot;…
+Done! 👏
+</code></pre>
+<p>What has happened?</p>
+<ol>
+<li>Hypper has made sure that all declared shared dependencies of <code>our-app</code> are
+satisfied, installing those that are missing. Since the chart of the shared
+dependency didn't have annotations for default namespace, it will install
+them on the dependent namespace.</li>
+<li>Since we haven't specified the release name or namespace in the command,
+Hypper has installed <code>our-app</code> in the default release-name (<code>our-app-name</code>)
+and namespace (<code>hypper</code>) we specified in the Hypper annotations.</li>
+</ol>
+<p>Let's see:</p>
+<pre><code class="language-console">$ hypper shared-deps list ./our-app
+NAME            VERSION REPOSITORY                                              STATUS
+postgresql      ~8.9.4  https://charts.bitnami.com/bitnami                      deployed
+prometheus      ~13.7.0 https://prometheus-community.github.io/helm-charts      deployed
+$ hypper list -n hypper
+NAME            NAMESPACE       REVISION        UPDATED                                         STATUS          CHART                   APP VERSION
+our-app-name    hypper          1               2021-04-15 17:21:32.697798439 +0200 CEST        deployed        our-app-0.1.0           1.16.0
+postgresql      hypper          1               2021-04-15 17:21:31.992593877 +0200 CEST        deployed        postgresql-10.3.17      11.11.0
+prometheus      hypper          1               2021-04-15 17:03:49.917821217 +0200 CEST        deployed        prometheus-13.7.0       2.26.0
+</code></pre>
+<p>Yay! they are all installed.</p>
+<p>If you want, you can always install <code>our-app</code> without the shared-dependencies, by
+passing the flag <code>--no-shared-deps</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../../user/howto/search.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../../reference-guides.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="../../user/howto/search.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="../../reference-guides.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
